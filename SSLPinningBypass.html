@@ -14,9 +14,9 @@
 		<p>While working on this project, I found lots of documentation that walked me through the steps of defeating SSL Pinning, but I didn’t find any that mentioned the errors that I was facing, which mostly stemmed from Apktool. I don’t know if this will help anyone else with these issues, but I decided to write up my workaround so that hopefully it may help someone else.</p>
 		
 		<h2>Background</h2>
-		<p>I had an Android application with a previously discovered finding that allowed the bypassing of SSL Pinning. If you don’t already know, SSL Pinning essentially allows an application to only trust valid certificates. This is a security feature that is meant to prevent attackers from using proxies and executing man-in-the-middle attacks to intercept and edit the requests being sent and received by the application. If SSL Pinning is not implemented, then you can set up a proxy, such as Burp Suite (<a href="https://blog.ropnop.com/configuring-burp-suite-with-android-nougat/">https://blog.ropnop.com/configuring-burp-suite-with-android-nougat/</a>), which will allow you to act as a man-in-the-middle intercepting all requests being made by the application. However, if the application has SSL Pinning enabled, the requests will be rejected by the application since it does not trust the certificate that is presented by Burp Suite.</p>
+		<p>I was performing a security assessment of an Android application that had SSL Pinning enabled. If you don’t already know, SSL Pinning essentially allows an application to only trust valid certificates. This is a security feature that is meant to prevent attackers from using proxies and executing man-in-the-middle attacks to intercept and edit the requests being sent and received by the application. If SSL Pinning is not implemented, then you can set up a proxy, such as Burp Suite (<a href="https://blog.ropnop.com/configuring-burp-suite-with-android-nougat/">https://blog.ropnop.com/configuring-burp-suite-with-android-nougat/</a>), which will allow you to act as a man-in-the-middle intercepting all requests being made by the application. However, if the application has SSL Pinning enabled, the requests will be rejected by the application since it does not trust the certificate that is presented by Burp Suite.</p>
 		
-		<p>For this particular application, SSL Pinning was enabled, but it was implemented in a way that was easily bypassed. When this issue was originally reported, the application did not have any root detection enabled, which meant that it was possible to run the application on a rooted Android device. This allowed for a few options when defeating SSL Pinning (as well as exploiting other security issues). Since then, the development team has implemented root detection, so the application will no longer operate on a rooted device. This greatly improved the overall security of the application, but it made my job of testing SSL Pinning more difficult since I had to find a way to do so without a rooted device.</p>
+		<p>This particular application had previously been tested with SSL Pinning enabled, but at that time, the application did not have any root detection enabled, which meant that it was possible to run the application on a rooted Android device. This allowed for a few options when defeating SSL Pinning (as well as exploiting other security issues). Since then, the development team has implemented root detection, so the application will no longer operate on a rooted device. This greatly improved the overall security of the application, but it made my job much more difficult since I had to find a way to bypass SSL Pinning without a rooted device.</p>
 
 		<h2>Initial Solution</h2>
 		<p>There are several blog posts and other documentation on the internet describing multiple ways to defeat SSL Pinning for both Android and iOS. For example:</p>
@@ -73,7 +73,8 @@
 				</ul></li>
 				<li>At this new prompt, run the command <span class="terminal">android sslpinning disable</span>
 				<ul><li>SSL Pinning should now be disabled for this application and you should be able to use any of your normal proxy tools to execute man-in-the-middle attacks</li></ul></li>
-
+		<br />
+		<img src="success.png">
 
 	</body>
 </html> 
